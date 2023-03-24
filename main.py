@@ -1,9 +1,9 @@
-# from base_credit.base_credit import BaseCredit
 from base_census.base_census import BaseSensus
+from base_credit.base_credit import BaseCredit
 
 
 def main():
-    # BaseCredit.execute()
+    BaseCredit.execute()
     BaseSensus.execute()
 
 

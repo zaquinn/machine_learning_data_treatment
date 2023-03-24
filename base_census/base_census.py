@@ -1,9 +1,12 @@
+import pickle
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
 from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 
 
@@ -25,9 +28,9 @@ class BaseSensus:
         #     x=base_census["income"]
         # )  # gera o plot especificado na variavel x, necessario usar com a chamada do plt.show() abaixo
 
-        plt.hist(x=base_census["age"])  # gera o histograma especificado na variavel x
+        # plt.hist(x=base_census["age"])  # gera o histograma especificado na variavel x
 
-        plt.show()  # exibe o plot do seaborn/pyplot etc
+        # plt.show()  # exibe o plot do seaborn/pyplot etc
 
         # grafico = px.treemap(base_census, path=["workclass", "age"]) # agrupa os dados em uma relação de workclass e age
 
@@ -84,6 +87,35 @@ class BaseSensus:
         # indice gerado pelo metodo anterior, que pode fazer com que alguns algoritmos interpretem valores de indice mais alto como mais relevantes
         X_census = onehotencoder_census.fit_transform(X_census).toarray()
 
-        print(
-            X_census.shape
-        )  # pode-se observar que a base de dados agora possui 108 colunas, ao invés das 14 anteriores
+        # print(
+        #     X_census.shape
+        # )  # pode-se observar que a base de dados agora possui 108 colunas, ao invés das 14 anteriores
+
+        # instancia a classe de pré-processamento de dados do scikit-learn para usá-la para escalar atributos deixando as colunas com valores aproximados entre si
+        scaler_census = StandardScaler()
+
+        # redimensiona os valores das colunas para possuírem valores aproximados entre si
+        X_census = scaler_census.fit_transform(X_census)
+
+        # divide a base de dados e suas colunas de atributos previsores em bases de treinamento e teste, assim como a classe(coluna de resultados) dessas bases de dados
+        # parametro test_size define a porcentagem da base de dados que sera separada para testes, nesse caso, 15%
+        # random_state=0 faz com que os dados selecionados e divididos sejam sempre os mesmos em toda execução
+        (
+            X_census_treinamento,
+            X_census_teste,
+            y_census_treinamento,
+            y_census_teste,
+        ) = train_test_split(X_census, y_census, test_size=0.15, random_state=0)
+
+        # utiliza da biblioteca pickle para gerar os arquivos com as bases de dados de treinamento e teste já pré-processadas
+        # evitando ter que realizar todo o pré-processamento acima a cada execução
+        with open("census.pkl", mode="wb") as f:
+            pickle.dump(
+                [
+                    X_census_treinamento,
+                    y_census_treinamento,
+                    X_census_teste,
+                    y_census_teste,
+                ],
+                f,
+            )
