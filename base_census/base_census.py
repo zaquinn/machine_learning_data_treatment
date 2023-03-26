@@ -11,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 
 
 class BaseSensus:
-    def execute():
+    def data_pre_processment():
         base_census = pd.read_csv("census.csv")
 
         # print(

@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 class BaseCredit:
-    def execute():
+    def data_pre_processment():
         base_credit = pd.read_csv("credit_data.csv")
 
         # plt.hist(x=base_credit["loan"])
