@@ -7,7 +7,8 @@ def main():
     # BaseCredit.data_pre_processment()
     # BaseSensus.data_pre_processment()
     # BaseRiskCredit.data_pre_processment()
-    BaseRiskCredit.execute_algorithm()
+    # BaseRiskCredit.execute_algorithm()
+    BaseCredit.execute_algorithm()
 
 
 if __name__ == "__main__":

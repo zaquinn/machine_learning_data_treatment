@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 
 
@@ -70,3 +72,25 @@ class BaseCredit:
                 ],
                 f,
             )
+
+    def execute_algorithm():
+        # recupera os dados pre-processados e salvos do arquivo credit.pkl
+        with open("credit.pkl", "rb") as f:
+            (
+                X_credit_treinamento,
+                y_credit_treinamento,
+                X_credit_teste,
+                y_credit_teste,
+            ) = pickle.load(f)
+
+        # instanciaçao do algoritmo naive bayes
+        naive_credit_data = GaussianNB()
+
+        # treinando o algoritmo com os dados de treinamento, gerando a tabela de probabilidades
+        naive_credit_data.fit(X_credit_treinamento, y_credit_treinamento)
+
+        # gerando as previsoes com os dados de teste
+        previsoes = naive_credit_data.predict(X_credit_teste)
+
+        # comparando os resultados das previsoes com os registros reais de classificações de teste, para medir a eficiencia do algoritmo
+        print(accuracy_score(y_credit_teste, previsoes))
