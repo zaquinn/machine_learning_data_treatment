@@ -6,8 +6,11 @@ import pandas as pd
 import plotly.express as px
 import seaborn as sns
 from sklearn.compose import ColumnTransformer
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
+from yellowbrick.classifier import ConfusionMatrix
 
 
 class BaseSensus:
@@ -119,3 +122,33 @@ class BaseSensus:
                 ],
                 f,
             )
+
+    def execute_algorithm():
+        # recupera os dados pre-processados e salvos do arquivo census.pkl
+        with open("census.pkl", "rb") as f:
+            (
+                X_census_treinamento,
+                y_census_treinamento,
+                X_census_teste,
+                y_census_teste,
+            ) = pickle.load(f)
+
+        # instanciaçao do algoritmo naive bayes
+        naive_census_data = GaussianNB()
+
+        # treinando o algoritmo com os dados de treinamento, gerando a tabela de probabilidades
+        naive_census_data.fit(X_census_treinamento, y_census_treinamento)
+
+        # gerando as previsoes com os dados de teste
+        previsoes = naive_census_data.predict(X_census_teste)
+
+        # comparando os resultados das previsoes com os registros reais de classificações de teste, para medir a eficiencia do algoritmo
+        print(accuracy_score(y_census_teste, previsoes))
+
+        # grafico de distribuição de acertos
+        cm = ConfusionMatrix(naive_census_data)
+        cm.fit(X_census_treinamento, y_census_treinamento)
+        cm.score(X_census_teste, y_census_teste)
+
+        # tabela de amostra de resultados individuais, mostrando a precisao do algoritmo em porcentagens
+        print(classification_report(y_census_teste, previsoes))
