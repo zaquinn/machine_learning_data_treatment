@@ -7,9 +7,9 @@ def main():
     # BaseCredit.data_pre_processment()
     # BaseSensus.data_pre_processment()
     # BaseRiskCredit.data_pre_processment()
-    # BaseRiskCredit.execute_algorithm()
-    # BaseCredit.execute_algorithm()
-    BaseSensus.execute_algorithm()
+    BaseRiskCredit.execute_decision_tree()
+    # BaseCredit.execute_naive_bayes()
+    # BaseSensus.execute_naive_bayes()
 
 
 if __name__ == "__main__":

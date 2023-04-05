@@ -123,7 +123,7 @@ class BaseSensus:
                 f,
             )
 
-    def execute_algorithm():
+    def execute_naive_bayes():
         # recupera os dados pre-processados e salvos do arquivo census.pkl
         with open("census.pkl", "rb") as f:
             (

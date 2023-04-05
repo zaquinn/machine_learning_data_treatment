@@ -73,7 +73,7 @@ class BaseCredit:
                 f,
             )
 
-    def execute_algorithm():
+    def execute_naive_bayes():
         # recupera os dados pre-processados e salvos do arquivo credit.pkl
         with open("credit.pkl", "rb") as f:
             (
