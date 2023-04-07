@@ -5,10 +5,11 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 
 
 class BaseCredit:
@@ -94,3 +95,29 @@ class BaseCredit:
 
         # comparando os resultados das previsoes com os registros reais de classificações de teste, para medir a eficiencia do algoritmo
         print(accuracy_score(y_credit_teste, previsoes))
+
+    def execute_decision_tree():
+        # recupera os dados pre-processados e salvos do arquivo credit.pkl
+        with open("credit.pkl", "rb") as f:
+            (
+                X_credit_treinamento,
+                y_credit_treinamento,
+                X_credit_teste,
+                y_credit_teste,
+            ) = pickle.load(f)
+
+        # instancia algoritmo de decision tree, define o criterio de calculo como entropia, define random_state=0 para sempre gerar os mesmos resultados
+        # para fins de comparação
+        arvore_credit = DecisionTreeClassifier(criterion="entropy", random_state=0)
+
+        arvore_credit.fit(X_credit_treinamento, y_credit_treinamento)
+
+        previsoes = arvore_credit.predict(X_credit_teste)
+
+        # teste de precisao de acertos, nesse caso deu 0.98, oq significa 98% de acertos
+        accuracy = accuracy_score(y_credit_teste, previsoes)
+
+        print(accuracy)
+
+        # metricas de acerto de cada opção de classe
+        print(classification_report(y_credit_teste, previsoes))

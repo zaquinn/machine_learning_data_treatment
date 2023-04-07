@@ -7,7 +7,7 @@ def main():
     # BaseCredit.data_pre_processment()
     # BaseSensus.data_pre_processment()
     # BaseRiskCredit.data_pre_processment()
-    BaseRiskCredit.execute_decision_tree()
+    BaseCredit.execute_decision_tree()
     # BaseCredit.execute_naive_bayes()
     # BaseSensus.execute_naive_bayes()
 
