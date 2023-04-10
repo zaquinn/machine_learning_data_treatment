@@ -10,10 +10,11 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 from yellowbrick.classifier import ConfusionMatrix
 
 
-class BaseSensus:
+class BaseCensus:
     def data_pre_processment():
         base_census = pd.read_csv("census.csv")
 
@@ -151,4 +152,27 @@ class BaseSensus:
         cm.score(X_census_teste, y_census_teste)
 
         # tabela de amostra de resultados individuais, mostrando a precisao do algoritmo em porcentagens
+        print(classification_report(y_census_teste, previsoes))
+
+    def execute_decision_tree():
+        # recupera os dados pre-processados e salvos do arquivo census.pkl
+        with open("census.pkl", "rb") as f:
+            (
+                X_census_treinamento,
+                y_census_treinamento,
+                X_census_teste,
+                y_census_teste,
+            ) = pickle.load(f)
+
+        arvore_census = DecisionTreeClassifier(criterion="entropy", random_state=0)
+
+        arvore_census.fit(X_census_treinamento, y_census_treinamento)
+
+        previsoes = arvore_census.predict(X_census_teste)
+
+        accuracy = accuracy_score(y_census_teste, previsoes)
+
+        print(accuracy)
+
+        # metricas de acerto de cada opção de classe
         print(classification_report(y_census_teste, previsoes))
